@@ -1,0 +1,32 @@
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V5
+ * Hallmark · genre: editorial · macrostructure: Narrative Workflow · theme: Almanac · enrichment: none · nav: N3 · footer: Ft4
+ * CSS stamp: editorial / Narrative Workflow / Almanac technical field notebook · contrast: pass (40–41) · slop: pass (42–49) · mobile: pass (34, 49, 50–57)
+ */
+:root {
+  --color-paper: oklch(96% 0.025 84);
+  --color-paper-2: oklch(92% 0.035 84);
+  --color-paper-3: oklch(87% 0.045 84);
+  --color-ink: oklch(23% 0.025 70);
+  --color-ink-2: oklch(39% 0.025 70);
+  --color-muted: oklch(48% 0.025 70);
+  --color-rule: oklch(72% 0.035 84);
+  --color-rule-2: oklch(63% 0.04 84);
+  --color-accent: oklch(52% 0.12 290);
+  --color-accent-ink: oklch(98% 0.015 84);
+  --color-sage: oklch(53% 0.08 145);
+  --color-amber: oklch(69% 0.12 78);
+  --color-error: oklch(47% 0.14 25);
+  --color-success: oklch(43% 0.1 145);
+  --color-focus: oklch(42% 0.15 290);
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --space-xs: 0.25rem; --space-sm: 0.5rem; --space-md: 1rem; --space-lg: 1.5rem;
+  --space-xl: 2rem; --space-2xl: 3rem; --space-3xl: 5rem;
+  --text-xs: 0.72rem; --text-sm: 0.86rem; --text-md: 1rem; --text-lg: 1.25rem;
+  --text-xl: 1.65rem; --text-2xl: 2.25rem; --text-display: clamp(2.75rem, 7vw, 6rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 520ms;
+  --rule-hairline: 1px; --rule-thick: 3px; --radius-sm: 0.2rem; --radius-md: 0.5rem;
+  --banner-height: 4.5rem; --z-sticky: 20; --z-sticky-nav: 30;
+}

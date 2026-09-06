@@ -1,0 +1,10 @@
+{
+  "date": "2026-09-06",
+  "framework": "Next.js App Router + TypeScript",
+  "fontStack": "No existing font stack; introduced Source Serif 4, IBM Plex Sans, IBM Plex Mono",
+  "palette": "No existing palette; introduced OKLCH Almanac paper/ink/sage/amber/violet tokens",
+  "motion": "No existing motion library; motion-cut with quiet transform/opacity transitions",
+  "spacing": "No existing scale; introduced semantic 4pt spacing tokens",
+  "preserved": ["README.md", "robotics-physical-ai-learning-path.md", "robotics-learning-log.md", ".codex/skills/hallmark"],
+  "introduced": ["Narrative Workflow macrostructure", "responsive states", "Firestore repository/context", "demo fallback"]
+}

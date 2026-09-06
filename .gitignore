@@ -1,0 +1,11 @@
+node_modules
+.next
+*.tsbuildinfo
+out
+coverage
+.env*
+!.env.example
+playwright-report
+test-results
+firebase-debug.log
+firestore-debug.log
