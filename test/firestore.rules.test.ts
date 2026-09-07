@@ -14,6 +14,7 @@ describe("Firestore owner-only rules", () => {
     expect(rules).toContain("request.auth != null && request.auth.uid == userId");
     expect(rules).toContain("match /weeks/{weekId}");
     expect(rules).toContain("match /milestones/{checkpointId}");
+    expect(rules).toContain("match /weeks/{weekId}/quizAttempts/{attemptId}");
   });
   it("denies unexpected roots by default", () => {
     expect(rules).toContain("match /{document=**} { allow read, write: if false; }");

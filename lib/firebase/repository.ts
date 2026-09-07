@@ -1,6 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "./client";
-import { MilestoneScore, UserSettings, WeekProgress } from "../types";
+import { defaultUserSettings, MilestoneScore, QuizAttempt, UserSettings, WeekProgress } from "../types";
 
 const requireDb = () => { if (!db) throw new Error("Firebase is not configured"); return db; };
 
@@ -31,11 +31,19 @@ export async function saveMilestone(uid: string, value: MilestoneScore) {
   // setDoc resolves on backend acknowledgement (offline persistence is disabled).
   await setDoc(doc(requireDb(), "users", uid, "milestones", value.checkpointId), value, { merge: true });
 }
+export async function loadQuizAttempts(uid: string, weekId: string): Promise<Record<string, QuizAttempt>> {
+  const snaps = await getDocs(collection(requireDb(), "users", uid, "weeks", weekId, "quizAttempts"));
+  return Object.fromEntries(snaps.docs.map((item) => [item.id, item.data() as QuizAttempt]));
+}
+export async function saveQuizAttempt(uid: string, value: QuizAttempt) {
+  await setDoc(doc(requireDb(), "users", uid, "weeks", value.weekId, "quizAttempts", value.id), value, { merge: true });
+}
 export async function resetUserData(uid: string) {
   const database = requireDb();
   const [weeks, milestones] = await Promise.all([
     getDocs(collection(database, "users", uid, "weeks")), getDocs(collection(database, "users", uid, "milestones")),
   ]);
-  await Promise.all([...weeks.docs, ...milestones.docs].map((item) => deleteDoc(item.ref)));
-  await setDoc(doc(database, "users", uid), { firstFriday: null, onboardingStatus: "not_started", updatedAt: new Date().toISOString() }, { merge: true });
+  const attempts = await Promise.all(weeks.docs.map((week) => getDocs(collection(database, "users", uid, "weeks", week.id, "quizAttempts"))));
+  await Promise.all([...weeks.docs, ...milestones.docs, ...attempts.flatMap((result) => result.docs)].map((item) => deleteDoc(item.ref)));
+  await setDoc(doc(database, "users", uid), { ...defaultUserSettings, updatedAt: new Date().toISOString() }, { merge: true });
 }

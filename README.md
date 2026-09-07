@@ -15,7 +15,7 @@ The learning loop is deliberately simple:
 3. **Write a conversation brief.** Capture the mechanism, loop position, tradeoff, evidence, failure mode, business implication, and questions for a founder, engineer, and investor.
 4. **Retrieve and reassess.** Track confidence, revisit open questions, and score conversation readiness at Weeks 4, 8, and 12.
 
-The app keeps the curriculum in Git while storing only the signed-in user's progress and notes in Firebase. This makes the learning material reviewable and the personal notebook private.
+The app keeps the curriculum in Git while storing only the signed-in user's progress, reflections, quiz attempts, and notes in Firebase. This makes the learning material reviewable and the personal notebook private.
 
 ## Visual proof
 
@@ -57,9 +57,9 @@ The screenshots below were captured from the implemented application using its e
 </details>
 
 <details>
-<summary><strong>Settings</strong> · <code>/settings</code></summary>
+<summary><strong>Account</strong> · <code>/account</code></summary>
 
-![Settings page with calendar controls, Markdown and JSON export, sign-out, and confirmed reset](./docs/screenshots/settings.jpg)
+![Account page with cadence controls, AI privacy, exports, sign-out, and confirmed reset](./docs/screenshots/settings.jpg)
 
 </details>
 
@@ -160,6 +160,6 @@ Import this repository into Vercel (the included [`vercel.json`](./vercel.json) 
 
 ## Data, exports, and reset
 
-The app writes only to `users/{uid}`, `users/{uid}/weeks/{weekId}`, and `users/{uid}/milestones/{checkpointId}`. Firestore rules deny all other roots and require the signed-in UID to match the document owner. Settings provides Markdown and schema-versioned JSON exports generated in the browser. Reset requires typing `RESET MY NOTEBOOK` and deletes the signed-in user’s week/milestone documents; export first if you need a copy.
+The app writes only to `users/{uid}`, `users/{uid}/weeks/{weekId}`, `users/{uid}/weeks/{weekId}/quizAttempts/{attemptId}`, and `users/{uid}/milestones/{checkpointId}`. Firestore rules deny all other roots and require the signed-in UID to match the document owner. Account provides Markdown and schema v2 JSON exports (preferences, reflections, attempts, evaluations, revisions, and challenges) generated in the browser. Reset requires typing `RESET MY NOTEBOOK` and deletes the signed-in user’s week, nested attempt, milestone, and preference documents; export first if you need a copy.
 
 This is a private notebook, not a compliance system. Review Firebase region, retention, access, Google account, and Vercel preview settings for your own privacy requirements. The app does not use admin APIs, service-account credentials, or persistent offline caching.

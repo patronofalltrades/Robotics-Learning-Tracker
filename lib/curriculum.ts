@@ -36,7 +36,7 @@ export const resources: CurriculumResource[] = [
 
 const byId = (ids: string[]) => ids.map((id) => resources.find((item) => item.id === id)!).filter(Boolean);
 
-export const curriculum: CurriculumWeek[] = [
+const curriculumBase: CurriculumWeek[] = [
   {
     id: "week-1", number: 1, title: "What a robot is: the full stack and the closed loop",
     mechanisms: ["embodiment", "degrees of freedom", "observations", "state", "actions", "policies", "open-loop vs. closed-loop behavior", "autonomy vs. automation", "latency"],
@@ -228,5 +228,37 @@ export const curriculum: CurriculumWeek[] = [
     resources: byId(["princeton-intro", "market-robotics", "value-accrue", "no-chatgpt", "robotics-topic"]),
   },
 ];
+
+const metadata: Array<{ summary: string; objective: string; tags: string[] }> = [
+  { summary: "A robot is a sensing, decision, and actuation loop embedded in the physical world.", objective: "Name every layer behind a robot demo and explain where feedback changes the next action.", tags: ["closed-loop", "embodiment", "autonomy"] },
+  { summary: "Coordinate frames make motion claims precise: every pose is relative to a frame.", objective: "Transform a point across frames and predict how calibration error propagates.", tags: ["geometry", "SE(3)", "calibration"] },
+  { summary: "Kinematics connects joint choices to reachable task-space motion and dexterity.", objective: "Use FK, IK, and Jacobians to distinguish intent from physical reachability.", tags: ["kinematics", "Jacobians", "manipulation"] },
+  { summary: "Dynamics and feedback turn plans into stable, timed behavior under real forces.", objective: "Trace a control failure from timing or model mismatch to observed motion.", tags: ["control", "feedback", "stability"] },
+  { summary: "State estimation is the discipline of acting on beliefs under noisy observations.", objective: "Explain why sensor fusion can still produce a confidently wrong state.", tags: ["uncertainty", "SLAM", "estimation"] },
+  { summary: "Planning separates task intent from collision-free, dynamically feasible motion.", objective: "Decompose a task and choose the right planning abstraction at each layer.", tags: ["planning", "navigation", "task decomposition"] },
+  { summary: "ROS 2 exposes a production robot as a graph of data, timing, and ownership boundaries.", objective: "Map nodes, topics, transforms, and replay tools onto the closed loop.", tags: ["ROS 2", "systems", "real-time"] },
+  { summary: "Perception becomes useful only when it supports contact, force, and recovery.", objective: "Trace uncertainty from pixels to a robust grasp and identify the missing evidence.", tags: ["perception", "grasping", "contact"] },
+  { summary: "Robot learning methods trade data, generalization, feedback, and control guarantees.", objective: "Choose between scripted, classical, imitation, reinforcement, and hybrid methods.", tags: ["imitation", "reinforcement learning", "diffusion"] },
+  { summary: "Foundation models promise transfer, but embodiment, data, latency, and evaluation still bind them.", objective: "Interrogate a generalization claim with an evidence table and a data-pyramid view.", tags: ["VLA", "foundation models", "data"] },
+  { summary: "Deployment is a reliability and economics problem as much as a capability problem.", objective: "Translate hardware, safety, intervention, uptime, and maintenance into a deployment scorecard.", tags: ["hardware", "safety", "reliability"] },
+  { summary: "Robotics value accrues where technical bottlenecks and operating leverage meet.", objective: "Make a defensible market thesis grounded in the stack, deployment loop, and economics.", tags: ["markets", "moats", "economics"] },
+];
+
+const questionPrompts = (week: CurriculumWeek): [string, string, string, string] => [
+  `Explain the mechanism of ${week.title.toLowerCase()} simply enough for a smart beginner.`,
+  `Trace one concrete closed-loop example involving ${week.title.toLowerCase()} from observation to outcome and feedback.`,
+  `Diagnose a realistic failure mode or tradeoff in ${week.title.toLowerCase()}; what evidence would separate competing causes?`,
+  `Apply ${week.title.toLowerCase()} in a founder, engineer, practitioner, or investor conversation without hiding the hard constraint.`,
+];
+
+export const curriculum: CurriculumWeek[] = curriculumBase.map((week, index) => {
+  const meta = metadata[index];
+  const prompts = questionPrompts(week);
+  const dimensions = ["accuracy", "causalReasoning", "simplicity", "transfer"] as const;
+  const questions = prompts.map((prompt, questionIndex) => ({ id: `w${week.number}-q${questionIndex + 1}`, prompt, dimension: dimensions[questionIndex], rubric: questionIndex === 0 ? "Correct mechanism, actors, and constraints." : questionIndex === 1 ? "Causal sequence includes feedback and a concrete example." : questionIndex === 2 ? "Names a failure, tradeoff, and discriminating evidence." : "Transfers the mechanism to a real conversation and decision." })) as [import("./types").FeynmanQuestion, import("./types").FeynmanQuestion, import("./types").FeynmanQuestion, import("./types").FeynmanQuestion];
+  const sourceIds = week.resources.map((resource) => resource.id);
+  const addActivityMetadata = (activity: (typeof week.friday.activities)[number]) => ({ ...activity, explanation: `Put ${activity.title.toLowerCase()} into your own words before checking the source again.`, source: week.resources[0]?.title, sourceIds });
+  return { ...week, ...meta, sources: sourceIds, questions, friday: { ...week.friday, activities: week.friday.activities.map(addActivityMetadata) }, saturday: { ...week.saturday, activities: week.saturday.activities.map(addActivityMetadata) } };
+});
 
 export const curriculumErrors = validateCurriculum(curriculum);
