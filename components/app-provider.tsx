@@ -153,7 +153,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
   const signOut = async () => { requestRef.current += 1; setUser(null); setLoading(true); setHydrated(false); setSettings(defaultSettings); setProgress({}); setMilestones({}); setAttempts({}); if (auth) await firebaseSignOut(auth); setLoading(false); setHydrated(true); router.replace("/login"); };
   const updateSettings = async (value: UserSettings) => { const errors = validateUserSettings(value); if (errors.length) throw new Error(errors[0]); const stamped = { ...value, onboardingStatus: "complete" as const, updatedAt: new Date().toISOString() }; setSettings(stamped); if (demoAllowed) setSaveState("offline"); else if (user && firebaseConfigured && hydrated) await withSave(() => repo.saveSettings(user.uid, stamped)); else throw new Error("not hydrated"); };
-  const updateWeek = async (value: WeekProgress) => { const normalized = normalizeProgress(value); setProgress((previous) => ({ ...previous, [normalized.weekId]: normalized })); if (demoAllowed) setSaveState("offline"); else if (user && firebaseConfigured && hydrated) await withSave(() => repo.saveWeek(user.uid, normalized)); else throw new Error("not hydrated"); };
+  const updateWeek = async (value: WeekProgress) => {
+    const normalized = normalizeProgress(value);
+    if (demoAllowed) { setSaveState("offline"); setSaveError("Demo mode does not persist changes."); throw new Error("offline"); }
+    if (!(user && firebaseConfigured && hydrated)) throw new Error("not hydrated");
+    await withSave(() => repo.saveWeek(user.uid, normalized));
+    // Reconcile shared state only after Firestore acknowledges the write. A
+    // rejected write must not make a Week page's initial-sync effect erase its
+    // still-unsaved local draft.
+    setProgress((previous) => ({ ...previous, [normalized.weekId]: normalized }));
+  };
   const updateMilestone = async (value: MilestoneScore) => { const normalized = normalizeMilestone(value); setMilestones((previous) => ({ ...previous, [normalized.checkpointId]: normalized })); if (demoAllowed) setSaveState("offline"); else if (user && firebaseConfigured && hydrated) await withSave(() => repo.saveMilestone(user.uid, normalized)); else throw new Error("not hydrated"); };
   const saveQuizAttempt = async (value: QuizAttempt) => { setAttempts((previous) => ({ ...previous, [value.id]: value })); if (demoAllowed) setSaveState("offline"); else if (user && firebaseConfigured && hydrated) await withSave(() => repo.saveQuizAttempt(user.uid, value)); else throw new Error("not hydrated"); };
   const retry = async () => { if (!lastWrite) throw new Error("No pending write to retry."); await withSave(lastWrite); };

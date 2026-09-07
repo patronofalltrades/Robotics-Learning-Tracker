@@ -15,4 +15,10 @@ describe("UserAvatar", () => {
     fireEvent.error(container.querySelector("img")!);
     expect(container.querySelector("span")).toHaveTextContent("A");
   });
+
+  it("can be decorative when the parent control supplies the accessible name", () => {
+    const { container } = render(<UserAvatar name="Ada Lovelace" photoURL="https://example.test/ada.jpg" decorative />);
+    expect(container.querySelector("img")).toHaveAttribute("alt", "");
+    expect(container.querySelector("img")).toHaveAttribute("aria-hidden", "true");
+  });
 });

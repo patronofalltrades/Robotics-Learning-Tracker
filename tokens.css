@@ -23,7 +23,7 @@
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --space-xs: 0.25rem; --space-sm: 0.5rem; --space-md: 1rem; --space-lg: 1.5rem;
   --space-xl: 2rem; --space-2xl: 3rem; --space-3xl: 5rem;
-  --text-xs: 0.72rem; --text-sm: 0.86rem; --text-md: 1rem; --text-lg: 1.25rem;
+  --text-xs: 0.8rem; --text-sm: 0.92rem; --text-md: 1rem; --text-lg: 1.25rem;
   --text-xl: 1.65rem; --text-2xl: 2.25rem; --text-display: clamp(2.75rem, 7vw, 6rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 520ms;
