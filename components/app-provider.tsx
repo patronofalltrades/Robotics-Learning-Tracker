@@ -15,6 +15,12 @@ type SaveState = "idle" | "saving" | "saved" | "offline" | "error";
 type AppContextValue = { user: User | typeof demoUser | null; loading: boolean; hydrated: boolean; demoMode: boolean; authError: string | null; settings: UserSettings; progress: Record<string, WeekProgress>; milestones: Record<string, MilestoneScore>; saveState: SaveState; saveError: string | null; signIn: () => Promise<void>; signOut: () => Promise<void>; updateSettings: (value: UserSettings) => Promise<void>; updateWeek: (value: WeekProgress) => Promise<void>; updateMilestone: (value: MilestoneScore) => Promise<void>; retry: () => Promise<void>; reset: () => Promise<void>; };
 const AppContext = createContext<AppContextValue | null>(null);
 
+export function authRedirect(pathname: string, loading: boolean, hasUser: boolean, hydrated: boolean) {
+  if (loading) return null;
+  if (pathname === "/login") return hasUser && hydrated ? "/" : null;
+  return !hasUser || !hydrated ? "/login" : null;
+}
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AppContextValue["user"]>(demoAllowed ? demoUser : null);
   const [loading, setLoading] = useState(firebaseConfigured && !demoAllowed);
@@ -47,7 +53,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       } catch { if (request !== requestRef.current) return; setUser(null); setAuthError("Could not load your private notebook. Sign in again to retry."); setLoading(false); setHydrated(false); }
     });
   }, []);
-  useEffect(() => { if (!loading && pathname !== "/login" && (!user || !hydrated)) router.replace("/login"); }, [loading, hydrated, pathname, router, user]);
+  useEffect(() => {
+    const destination = authRedirect(pathname, loading, Boolean(user), hydrated);
+    if (destination) router.replace(destination);
+  }, [loading, hydrated, pathname, router, user]);
   const withSave = async (write: () => Promise<void>) => {
     if (typeof navigator !== "undefined" && !navigator.onLine) { setSaveState("offline"); setSaveError("You appear offline. Reconnect, then retry."); setLastWrite(() => write); throw new Error("offline"); }
     setSaveState("saving"); setSaveError(null); setLastWrite(() => write);
