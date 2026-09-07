@@ -114,6 +114,10 @@ npm run dev
 
 The app is fail-closed by default. Missing Firebase variables show an unconfigured login screen; no implicit demo user is created.
 
+### Google sign-in troubleshooting
+
+The tracker uses a Google popup flow and does not use `signInWithRedirect`, because redirect state can be lost in browsers that partition or clear `sessionStorage`. Firebase’s popup resolver requires usable `localStorage`. If Google reports “missing initial state,” close any old Google sign-in tabs, open the tracker as a top-level tab (not an embedded preview), allow pop-ups and local site storage for `robotics-learning-tracker.vercel.app`, and start a fresh sign-in. The app checks localStorage before opening Google and asks you to enable local site storage when the browser blocks it.
+
 ### Explicit demo mode
 
 For a local preview only, set this in `.env.local`:
