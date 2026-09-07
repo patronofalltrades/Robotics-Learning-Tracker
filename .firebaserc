@@ -1,1 +1,5 @@
-{ "projects": { "default": "robotics-tracker-hanif-906" } }
+{
+  "projects": {
+    "default": "robotics-tracker-hanif-906"
+  }
+}

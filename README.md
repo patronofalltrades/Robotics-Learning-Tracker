@@ -4,7 +4,7 @@ A private Friday/Saturday notebook for the 12-week syllabus in [`robotics-physic
 
 ## Local setup
 
-Requirements: Node.js 20.9+ and npm.
+Requirements: Node.js 22.x and npm.
 
 ```bash
 npm install
@@ -31,15 +31,15 @@ Demo mode is honored only when `NODE_ENV` is `development` or `test`; it is neve
 3. Add `localhost` and your deployed domain under Authentication → Settings → Authorized domains.
 4. Create Firestore in region `us-west2` (or update the region to match your project policy).
 5. Copy the Web app’s public configuration into `.env.local` using [`.env.example`](./.env.example). These are client-side Firebase values, not admin credentials.
-6. Deploy the owner-only rules and indexes:
+6. Deploy the Google provider configuration, owner-only rules, and indexes:
 
 ```bash
 npx firebase login
 npx firebase use YOUR_PROJECT_ID
-npx firebase deploy --only firestore
+npx firebase deploy --only auth,firestore
 ```
 
-`.firebaserc` intentionally contains only the safe placeholder `your-firebase-project-id`; replace it locally or with `firebase use`. Never commit service-account keys or admin credentials.
+`.firebaserc` targets the non-secret Firebase project ID `robotics-tracker-hanif-906`. Use `firebase use YOUR_PROJECT_ID` when deploying a fork. Never commit service-account keys or admin credentials.
 
 ## Emulator and tests
 
