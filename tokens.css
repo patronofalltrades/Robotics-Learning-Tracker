@@ -1,6 +1,8 @@
-/* Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V5
- * Hallmark · genre: editorial · macrostructure: Narrative Workflow · theme: Almanac · enrichment: none · nav: N3 · footer: Ft4
- * CSS stamp: editorial / Narrative Workflow / Almanac technical field notebook · contrast: pass (40–41) · slop: pass (42–49) · mobile: pass (34, 49, 50–57)
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4
+ * Hallmark · studied: yes · DNA: esiseraj.github.io/robot-learning-fieldbook + panav.gitbook.io/robotics-handbook
+ * Observed: fixed technical rail, nested reference index, serif chapter display, compact in-page orientation; source rhythm verified visually.
+ * Hallmark · genre: editorial · macrostructure: Workbench · theme: studied-DNA (source: supplied Fieldbook + Handbook URLs) · enrichment: none · nav: N3 · footer: Ft4
+ * CSS stamp: editorial / Workbench / studied technical fieldbook · contrast: pass (40–41) · slop: pass (42–49) · mobile: pass (34, 49, 50–57)
  */
 :root {
   --color-paper: oklch(96% 0.025 84);
@@ -28,5 +30,5 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); --dur-fast: 120ms; --dur-base: 220ms; --dur-slow: 520ms;
   --rule-hairline: 1px; --rule-thick: 3px; --radius-sm: 0.2rem; --radius-md: 0.5rem;
-  --banner-height: 4.5rem; --z-sticky: 20; --z-sticky-nav: 30;
+  --banner-height: 4.5rem; --rail-width: 14.5rem; --z-sticky: 20; --z-sticky-nav: 30;
 }

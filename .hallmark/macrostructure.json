@@ -1,10 +1,10 @@
 {
-  "macrostructure": "Narrative Workflow",
-  "theme": "Almanac",
+  "macrostructure": "Workbench",
+  "theme": "studied-DNA",
   "genre": "editorial",
   "tone": "technical field notebook",
-  "nav": "N3 side-rail adapted to responsive top and bottom navigation",
+  "nav": "N3 persistent desktop study rail with tablet top navigation and mobile bottom navigation",
   "footer": "Ft4 dense colophon",
   "enrichment": "none (typography only)",
-  "reason": "The Friday/Saturday cadence and 12-week sequence are a real process timeline."
+  "reason": "The interface is now a working study environment: the Fieldbook contributes durable orientation and chapter progression, while the Handbook contributes searchable hierarchy and compact reference browsing."
 }

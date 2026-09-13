@@ -10,7 +10,7 @@ async function enterDemo(page: Page) {
 
 test("demo fixture covers onboarding, activity, notes, account, and export", async ({ page }) => {
   await enterDemo(page);
-  await expect(page.getByRole("heading", { name: /Twelve weeks/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Twelve topics/ })).toBeVisible();
   await page.getByLabel("First Friday").fill("2026-09-04");
   await page.getByRole("button", { name: "Save setup" }).click();
   await expect(page.locator("main > .flash").first()).toBeVisible();
@@ -114,8 +114,29 @@ test("the compact resource index stays scannable at 200% zoom", async ({ page })
   await enterDemo(page);
   await page.goto("/resources");
   await page.evaluate(() => { document.documentElement.style.zoom = "2"; });
-  await expect(page.getByRole("heading", { name: /Read close/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Find the source/ })).toBeVisible();
   const dimensions = await page.evaluate(() => ({ documentWidth: document.documentElement.scrollWidth, viewportWidth: window.innerWidth }));
   expect(dimensions.documentWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
   await expect(page.getByRole("link", { name: /Open source/ }).first()).toBeVisible();
+});
+
+test("study rail and reference search preserve orientation", async ({ page }) => {
+  await enterDemo(page);
+  const width = page.viewportSize()?.width ?? 0;
+  if (width >= 960) {
+    await expect(page.getByRole("complementary", { name: "Study navigation" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Notebook navigation" })).toBeVisible();
+    await expect(page.getByText(/activities/).first()).toBeVisible();
+  } else {
+    await expect(page.getByRole("complementary", { name: "Study navigation" })).toBeHidden();
+  }
+  await page.goto("/resources");
+  const search = page.getByRole("searchbox", { name: "Search resources" });
+  await search.fill("ROS 2");
+  await expect(page.getByText(/matching “ROS 2”/)).toBeVisible();
+  await expect(page.getByText("ROS 2 documentation", { exact: true })).toBeVisible();
+  await search.fill("no-resource-has-this-name");
+  await expect(page.getByRole("heading", { name: /No source matches/ })).toBeVisible();
+  await page.getByRole("button", { name: "Clear search" }).click();
+  await expect(search).toHaveValue("");
 });

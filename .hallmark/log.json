@@ -1,3 +1,4 @@
 [
-  { "date": "2026-09-06", "macrostructure": "Narrative Workflow", "theme": "Almanac", "enrichment": "none", "brief": "Private Robotics and Physical AI learning tracker with Friday/Saturday workflow and 12-week syllabus." }
+  { "date": "2026-09-06", "macrostructure": "Narrative Workflow", "theme": "Almanac", "enrichment": "none", "brief": "Private Robotics and Physical AI learning tracker with Friday/Saturday workflow and 12-week syllabus." },
+  { "date": "2026-09-12", "macrostructure": "Workbench", "theme": "studied-DNA", "enrichment": "none", "brief": "Adapted the supplied Robot Learning Fieldbook and Robotics Handbook interaction DNA into the existing tracker: persistent study rail, dependency path, and searchable reference hierarchy." }
 ]
